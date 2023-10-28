@@ -1,4 +1,4 @@
-function Footer() {
+function footer() {
 	return (
 		<footer className="footer">
 			<p className="footer__copyright">&copy; 2020 Mesto Russia</p>
@@ -6,4 +6,4 @@ function Footer() {
 	);
 }
 
-export default Footer;
+export default footer;
