@@ -1,8 +1,8 @@
-function popupWithForm(props) {
+function PopupWithForm(props) {
 	return (
     <div className={props.isOpen ? `popup popup_${props.name} popup_opened` : `popup popup_${props.name}`}>
       <div className="popup__container">
-        <button className="popup__close" type="button" aria-label="Кнопка в форме крестика"></button>
+        <button className="popup__close" type="button" aria-label="Кнопка в форме крестика" onClick={props.onClose}></button>
         <h2 className="popup__header">{props.title}</h2>
         <form className="popup__form" action="#" name={props.name} method="post" noValidate>
           {props.children}
@@ -13,4 +13,4 @@ function popupWithForm(props) {
   );
 }
 
-export default popupWithForm
+export default PopupWithForm

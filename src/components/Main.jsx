@@ -1,4 +1,4 @@
-function main(props) {
+function Main(props) {
 
 	return (
 		<main className="content">
@@ -25,4 +25,4 @@ function main(props) {
 	);
 }
 
-export default main
+export default Main

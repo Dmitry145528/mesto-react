@@ -1,4 +1,4 @@
-function popupWithImg() {
+function PopupWithImg() {
 	<div className="popup popup_popup-img-back" id="popup_image">
 		<div className="popup__container-img">
 			<button className="popup__close" type="button" aria-label="Кнопка в форме крестика"></button>
@@ -10,4 +10,4 @@ function popupWithImg() {
 	</div>
 }
 
-export default popupWithImg
+export default PopupWithImg

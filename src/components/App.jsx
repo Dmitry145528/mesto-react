@@ -5,7 +5,7 @@ import Footer from '../components/Footer'
 import PopupWithForm from '../components/PopupWithForm'
 import PopupWithImg from './ImagePopup'
 
-function app() {
+function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -22,6 +22,12 @@ function app() {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
   };
 
+  const closeAllPopups = () => {
+    setIsEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+  };
+
   return (
     <>
       <div className="center-pos">
@@ -36,7 +42,8 @@ function app() {
       title="Редактировать профиль"
       name="edit-profile"
       button="Сохранить"
-      isOpen={isEditProfilePopupOpen}>
+      isOpen={isEditProfilePopupOpen}
+      onClose={closeAllPopups}>
         <fieldset className="popup__contact-info">
           <div className="popup__field">
             <input className="popup__input" id="name" placeholder="Имя и Фамилия" name="name" type="text" minLength="2" maxLength="40" required />
@@ -52,7 +59,8 @@ function app() {
       title="Новое место"
       name="add-card"
       button="Добавить"
-      isOpen={isAddPlacePopupOpen}>
+      isOpen={isAddPlacePopupOpen}
+      onClose={closeAllPopups}>
         <fieldset className="popup__contact-info">
           <div className="popup__field">
             <input className="popup__input" placeholder='Название' id="title" name="name" type="text" minLength="2" maxLength="30" required />
@@ -68,7 +76,8 @@ function app() {
       title="Обновить аватар"
       name="update-avatar"
       button="Сохранить"
-      isOpen={isEditAvatarPopupOpen}>
+      isOpen={isEditAvatarPopupOpen}
+      onClose={closeAllPopups}>
         <fieldset className="popup__contact-info">
           <div className="popup__field">
             <input className="popup__input" placeholder='Ссылка на картинку' id="avatar-url" name="avatar" type="url" required />
@@ -97,4 +106,4 @@ function app() {
   )
 }
 
-export default app
+export default App
