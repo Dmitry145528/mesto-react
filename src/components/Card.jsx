@@ -1,9 +1,12 @@
 function Card(props) {
+  const handleClick = () => {
+    props.onCardClick(props.card);
+  }
 
   return (
       <li className="element">
         <button className="element__trash" type="button" aria-label="Кнопка в виде мусорной корзины"></button>
-        <img className="element__img" src={props.src} alt={props.title} />
+        <img className="element__img" src={props.src} alt={props.title} onClick={handleClick}/>
         <div className="element__pos-element">
           <h2 className="element__title">{props.title}</h2>
           <button className="element__heart" type="button" aria-label="Кнопка в виде сердца">

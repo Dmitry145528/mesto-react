@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import Main from '../components/Main'
 import Footer from '../components/Footer'
 import PopupWithForm from '../components/PopupWithForm'
-import PopupWithImg from './ImagePopup'
+import ImagePopup from './ImagePopup'
 import api from '../utils/Api'
 import Card from './Card'
 
@@ -17,16 +17,17 @@ function App() {
   const [userAvatar, setUserAvatar] = useState('');
 
   const [cards, setCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   useEffect(() => {
     // Функция для выполнения запросов к API
     const fetchData = () => {
-
+      
       Promise.all([
         api.getProfileInfo(),
         api.getInitialCards()
       ])
-        .then(([userData, initialCards]) => { // , otherData Указать для доп инфы
+        .then(([userData, initialCards]) => {
           setUserName(userData.name);
           setUserDescription(userData.about);
           setUserAvatar(userData.avatar);
@@ -52,10 +53,15 @@ function App() {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
   };
 
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+  };
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setSelectedCard(false);
   };
 
   return (
@@ -68,19 +74,18 @@ function App() {
           userAvatar={userAvatar}
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick} />
-        <section className="elements">
-          <ul className="elements__grid-items">
-            {cards.map(card => (
+          onAddPlace={handleAddPlaceClick}
+          cardItems={cards.map(card => (
               <Card
-                key={card._id} // Добавьте ключ для каждой карточки
+                key={card._id} // Добавляем ключ карточке
                 title={card.name}
                 likes={card.likes.length}
                 src={card.link}
+                onCardClick={handleCardClick} // Передаём обработчик
+                card={card} // Передаём карточку
               />
             ))}
-          </ul>
-        </section>
+            />
         <Footer />
       </div>
       <PopupWithForm
@@ -134,7 +139,11 @@ function App() {
         title="Вы уверены?"
         name="delete-card"
         button="Да" />
-      <PopupWithImg />
+      <ImagePopup
+        name="update-avatar"
+        card={selectedCard}
+        onClose={closeAllPopups}
+      />
     </>
   )
 }

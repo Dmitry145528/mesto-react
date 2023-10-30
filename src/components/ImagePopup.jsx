@@ -1,13 +1,19 @@
-function PopupWithImg() {
-	<div className="popup popup_popup-img-back" id="popup_image">
-		<div className="popup__container-img">
-			<button className="popup__close" type="button" aria-label="Кнопка в форме крестика"></button>
-			<figure className="popup__figure">
-				<img className="popup__image" />
-				<figcaption className="popup__caption"></figcaption>
-			</figure>
-		</div>
-	</div>
+function ImagePopup(props) {
+	if (props.card) {
+		return (
+			<div className={props.card ? `popup popup_${props.name} popup_opened` : `popup popup_${props.name}`}>
+				<div className="popup__container-img">
+					<button className="popup__close" type="button" aria-label="Кнопка в форме крестика" onClick={props.onClose}></button>
+					<figure className="popup__figure">
+						<img className="popup__image" src={props.card.link} alt={props.card.name} />
+						<figcaption className="popup__caption">{props.card.name}</figcaption>
+					</figure>
+				</div>
+			</div>
+		);
+	} else {
+		return null; // Если selectedCard равен null, не рендерим ничего
+	}
 }
 
-export default PopupWithImg
+export default ImagePopup

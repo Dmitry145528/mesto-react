@@ -19,6 +19,7 @@ function Main(props) {
 			</section>
 			<section className="elements">
 				<ul className="elements__grid-items">
+					{props.cardItems}
 				</ul>
 			</section>
 		</main>
