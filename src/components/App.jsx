@@ -141,7 +141,6 @@ function App() {
         button="Да" />
       <ImagePopup
         name="popup-img-back"
-        isOpen={selectedCard}
         card={selectedCard}
         onClose={closeAllPopups}
       />
