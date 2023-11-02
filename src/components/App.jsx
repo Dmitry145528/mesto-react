@@ -22,7 +22,7 @@ function App() {
   useEffect(() => {
     // Функция для выполнения запросов к API
     const fetchData = () => {
-      
+
       Promise.all([
         api.getProfileInfo(),
         api.getInitialCards()
@@ -76,16 +76,16 @@ function App() {
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           cardItems={cards.map(card => (
-              <Card
-                key={card._id} // Добавляем ключ карточке
-                title={card.name}
-                likes={card.likes.length}
-                src={card.link}
-                onCardClick={handleCardClick} // Передаём обработчик
-                card={card} // Передаём карточку
-              />
-            ))}
+            <Card
+              key={card._id} // Добавляем ключ карточке
+              title={card.name}
+              likes={card.likes.length}
+              src={card.link}
+              onCardClick={handleCardClick} // Передаём обработчик
+              card={card} // Передаём карточку
             />
+          ))}
+        />
         <Footer />
       </div>
       <PopupWithForm
@@ -140,7 +140,8 @@ function App() {
         name="delete-card"
         button="Да" />
       <ImagePopup
-        name="update-avatar"
+        name="popup-img-back"
+        isOpen={selectedCard}
         card={selectedCard}
         onClose={closeAllPopups}
       />
