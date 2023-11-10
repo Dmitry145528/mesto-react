@@ -6,18 +6,18 @@ import PopupWithForm from '../components/PopupWithForm'
 import ImagePopup from './ImagePopup'
 import api from '../utils/Api'
 import Card from './Card'
+import CurrentUserContext from '../contexts/CurrentUserContext';
+import CurrentCardContext from '../contexts/CurrentCardContext';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
-
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+
+  const [currentUser, setCurrentUser] = useState('');
 
   useEffect(() => {
     // Функция для выполнения запросов к API
@@ -28,9 +28,7 @@ function App() {
         api.getInitialCards()
       ])
         .then(([userData, initialCards]) => {
-          setUserName(userData.name);
-          setUserDescription(userData.about);
-          setUserAvatar(userData.avatar);
+          setCurrentUser(userData);
           setCards(initialCards);
         })
         .catch(err => {
@@ -66,28 +64,20 @@ function App() {
 
   return (
     <>
-      <div className="center-pos">
-        <Header />
-        <Main
-          userName={userName}
-          userDescription={userDescription}
-          userAvatar={userAvatar}
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          cardItems={cards.map(card => (
-            <Card
-              key={card._id} // Добавляем ключ карточке
-              title={card.name}
-              likes={card.likes.length}
-              src={card.link}
-              onCardClick={handleCardClick} // Передаём обработчик
-              card={card} // Передаём карточку
+      <CurrentUserContext.Provider value={currentUser}>
+        <CurrentCardContext.Provider value={cards}>
+          <div className="center-pos">
+            <Header />
+            <Main
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              cardItems={<Card onCardClick={handleCardClick} />}
             />
-          ))}
-        />
-        <Footer />
-      </div>
+            <Footer />
+          </div>
+        </CurrentCardContext.Provider>
+      </CurrentUserContext.Provider>
       <PopupWithForm
         title="Редактировать профиль"
         name="edit-profile"
