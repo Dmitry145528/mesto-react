@@ -55,6 +55,33 @@ function App() {
     setSelectedCard(card);
   };
 
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+    // Определяем, какой метод использовать
+    const likeAction = () => isLiked ? api.deleteLike(card._id) : api.setLiked(card._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    likeAction(card._id)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      })
+      .catch((error) => {
+        console.error('Error changing like status:', error);
+      });
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
+      })
+      .catch((error) => {
+        console.error('Error deleting card:', error);
+      });
+  }
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -72,7 +99,7 @@ function App() {
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
-              cardItems={<Card onCardClick={handleCardClick} />}
+              cardItems={<Card onCardDelete={handleCardDelete} onCardLike={handleCardLike} onCardClick={handleCardClick} />}
             />
             <Footer />
           </div>

@@ -10,6 +10,14 @@ function Card(props) {
     props.onCardClick(card);
   }
 
+  const handleLikeClick = (card) => {
+    props.onCardLike(card);
+  }
+
+  const handleDeleteClick = (card) => {
+    props.onCardDelete(card);
+  }
+
   return (
     cards.map(card => {
       const isOwn = card.owner._id === currentUser._id;
@@ -18,11 +26,11 @@ function Card(props) {
 
       return (
         <li className="element" key={card._id}>
-          {isOwn && <button className="element__trash" type="button" aria-label="Кнопка в виде мусорной корзины"></button>}
+          {isOwn && <button className="element__trash" type="button" aria-label="Кнопка в виде мусорной корзины" onClick={() => handleDeleteClick(card)}></button>}
           <img className="element__img" src={card.link} alt={card.name} onClick={() => handleClick(card)} />
           <div className="element__pos-element">
             <h2 className="element__title">{card.name}</h2>
-            <button className={cardLikeButtonClassName} type="button" aria-label="Кнопка в виде сердца">
+            <button className={cardLikeButtonClassName} type="button" aria-label="Кнопка в виде сердца" onClick={() => handleLikeClick(card)}>
               <span className="element__heart_like-count">{card.likes.length}</span>
             </button>
           </div>
