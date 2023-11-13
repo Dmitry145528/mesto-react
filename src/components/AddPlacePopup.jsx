@@ -1,28 +1,37 @@
-import PopupWithForm from "./PopupWithForm"
-import { useRef } from 'react'
+import PopupWithForm from "./PopupWithForm";
+import { useRef, useState } from 'react';
 
 function AddPlacePopup(props) {
-
+  const [submitButtonText, setSubmitButtonText] = useState('Добавить');
   const inputTitleRef = useRef();
   const inputUrlRef = useRef();
 
   function handleSubmit(e) {
     e.preventDefault();
 
+    setSubmitButtonText('Добавление...'); // Изменение текста кнопки при отправке формы
+
     props.onAddPlace({
       name: inputTitleRef.current.value,
       link: inputUrlRef.current.value
-    });
-
-    inputTitleRef.current.value = '';
-    inputUrlRef.current.value = '';
+    })
+      .then(() => {
+        inputTitleRef.current.value = '';
+        inputUrlRef.current.value = '';
+      })
+      .catch((err) => {
+        console.error('Ошибка добавления карточки:', err);
+      })
+      .finally(() => {
+        setSubmitButtonText('Добавить'); // Возвращение исходного текста кнопки после завершения запроса
+      });
   }
 
   return (
     <PopupWithForm
       title="Новое место"
       name="add-card"
-      button="Добавить"
+      button={submitButtonText}
       onSubmit={handleSubmit}
       isOpen={props.isOpen}
       onClose={props.onClose}>
@@ -40,4 +49,4 @@ function AddPlacePopup(props) {
   );
 }
 
-export default AddPlacePopup 
+export default AddPlacePopup;

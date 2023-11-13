@@ -86,36 +86,27 @@ function App() {
   }
 
   function handleUpdateUser(userData) {
-    api.setProfileInfo(userData)
+    return api.setProfileInfo(userData)
       .then((newUserData) => {
         setCurrentUser(newUserData);
         closeAllPopups();
       })
-      .catch((error) => {
-        console.error('Ошибка обновления данных пользователя:', error);
-      });
   }
 
   function handleUpdateAvatar(userData) {
-    api.updateAvatar(userData)
+    return api.updateAvatar(userData)
       .then((newUserData) => {
         setCurrentUser(newUserData);
         closeAllPopups();
       })
-      .catch((err) => {
-        console.error('Ошибка обновления аватара:', err);
-      });
   }
 
   function handleAddPlaceSubmit({ name, link }) {
-    api.addCard({ name, link })
+    return api.addCard({ name, link })
       .then((newCard) => {
-        setCards([newCard, ...cards]); 
+        setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => {
-        console.error('Ошибка добавления карточки:', err);
-      });
   }
 
   const closeAllPopups = () => {

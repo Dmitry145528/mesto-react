@@ -3,7 +3,7 @@ import PopupWithForm from "./PopupWithForm"
 import CurrentUserContext from '../contexts/CurrentUserContext'
 
 function EditProfilePopup(props) {
-  // Стейт, в котором содержится значение инпута
+  const [submitButtonText, setSubmitButtonText] = useState('Сохранить');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -30,10 +30,17 @@ function EditProfilePopup(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // Передаём значения управляемых компонентов во внешний обработчик
+    setSubmitButtonText('Сохранение...'); // Изменение текста кнопки при отправке формы
+
     props.onUpdateUser({
       name,
       about: description,
+    })
+      .catch((err) => {
+        console.error('Ошибка обновления данных пользователя:', err);
+      })
+      .finally(() => {
+      setSubmitButtonText('Сохранить'); // Возвращение исходного текста кнопки после завершения запроса
     });
   }
 
@@ -41,7 +48,7 @@ function EditProfilePopup(props) {
     <PopupWithForm
       title="Редактировать профиль"
       name="edit-profile"
-      button="Сохранить"
+      button={submitButtonText}
       onSubmit={handleSubmit}
       isOpen={props.isOpen}
       onClose={props.onClose}>
