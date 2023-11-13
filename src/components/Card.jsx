@@ -1,6 +1,6 @@
-import { useContext } from 'react';
-import CurrentCardContext from '../contexts/CurrentCardContext';
-import CurrentUserContext from '../contexts/CurrentUserContext';
+import { useContext } from 'react'
+import CurrentCardContext from '../contexts/CurrentCardContext'
+import CurrentUserContext from '../contexts/CurrentUserContext'
 
 function Card(props) {
   const cards = useContext(CurrentCardContext); // Получим массив карточек
