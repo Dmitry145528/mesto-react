@@ -8,6 +8,7 @@ import api from '../utils/Api'
 import Card from './Card'
 import EditProfilePopup from './EditProfilePopup'
 import EditAvatarPopup from './EditAvatarPopup'
+import AddPlacePopup from './AddPlacePopup'
 import CurrentUserContext from '../contexts/CurrentUserContext'
 import CurrentCardContext from '../contexts/CurrentCardContext'
 
@@ -106,6 +107,17 @@ function App() {
       });
   }
 
+  function handleAddPlaceSubmit({ name, link }) {
+    api.addCard({ name, link })
+      .then((newCard) => {
+        setCards([newCard, ...cards]); 
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.error('Ошибка добавления карточки:', err);
+      });
+  }
+
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -135,23 +147,10 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser} />
-        <PopupWithForm
-          title="Новое место"
-          name="add-card"
-          button="Добавить"
+        <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}>
-          <fieldset className="popup__contact-info">
-            <div className="popup__field">
-              <input className="popup__input" placeholder='Название' id="title" name="name" type="text" minLength="2" maxLength="30" required />
-              <span className="title-error popup__input-error"></span>
-            </div>
-            <div className="popup__field">
-              <input className="popup__input" placeholder='Ссылка на картинку' id="img-url" name="link" type="url" required />
-              <span className="img-url-error popup__input-error"></span>
-            </div>
-          </fieldset>
-        </PopupWithForm>
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit} />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
