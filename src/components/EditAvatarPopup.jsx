@@ -1,9 +1,16 @@
 import PopupWithForm from "./PopupWithForm"
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 function EditAvatarPopup(props) {
   const [submitButtonText, setSubmitButtonText] = useState('Сохранить');
   const inputRef = useRef();
+
+  useEffect(() => {
+    // Сброс полей при закрытии модального окна
+    if (!props.isOpen) {
+      inputRef.current.value = '';
+    }
+  }, [props.isOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -13,12 +20,6 @@ function EditAvatarPopup(props) {
     props.onUpdateAvatar({
       avatar: inputRef.current.value,
     })
-      .then(() => {
-        inputRef.current.value = '';
-      })
-      .catch((err) => {
-        console.error('Ошибка обновления аватара:', err);
-      })
       .finally(() => {
         setSubmitButtonText('Сохранить');
       })

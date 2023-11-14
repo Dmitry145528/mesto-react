@@ -10,7 +10,6 @@ import EditProfilePopup from './EditProfilePopup'
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 import CurrentUserContext from '../contexts/CurrentUserContext'
-import CurrentCardContext from '../contexts/CurrentCardContext'
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -91,6 +90,9 @@ function App() {
         setCurrentUser(newUserData);
         closeAllPopups();
       })
+      .catch((err) => {
+        console.error('Ошибка обновления данных пользователя:', err);
+      })
   }
 
   function handleUpdateAvatar(userData) {
@@ -99,6 +101,9 @@ function App() {
         setCurrentUser(newUserData);
         closeAllPopups();
       })
+      .catch((err) => {
+        console.error('Ошибка обновления аватара:', err);
+      })
   }
 
   function handleAddPlaceSubmit({ name, link }) {
@@ -106,6 +111,9 @@ function App() {
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
+      })
+      .catch((err) => {
+        console.error('Ошибка добавления карточки:', err);
       })
   }
 
@@ -119,21 +127,24 @@ function App() {
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-        <CurrentCardContext.Provider value={cards}>
           <div className="center-pos">
             <Header />
             <Main
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
-              cardItems={<Card
-                onCardDelete={handleCardDelete}
-                onCardLike={handleCardLike}
-                onCardClick={handleCardClick} />}
+              cardItems={cards.map(card => (
+                <Card
+                  key={card._id}
+                  card={card}
+                  onCardDelete={handleCardDelete}
+                  onCardLike={handleCardLike}
+                  onCardClick={handleCardClick}
+                />
+              ))}
             />
             <Footer />
           </div>
-        </CurrentCardContext.Provider>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}

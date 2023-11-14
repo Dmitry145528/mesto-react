@@ -1,10 +1,27 @@
 import PopupWithForm from "./PopupWithForm";
-import { useRef, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function AddPlacePopup(props) {
   const [submitButtonText, setSubmitButtonText] = useState('Добавить');
-  const inputTitleRef = useRef();
-  const inputUrlRef = useRef();
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
+
+  // Обработчик изменения инпута обновляет стейт
+  function handleChangeTitle(e) {
+    setTitle(e.target.value);
+  }
+
+  useEffect(() => {
+    // Сброс полей при закрытии модального окна
+    if (!props.isOpen) {
+      setTitle('');
+      setUrl('');
+    }
+  }, [props.isOpen]);
+
+  function handleChangeUrl(e) {
+    setUrl(e.target.value);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -12,16 +29,9 @@ function AddPlacePopup(props) {
     setSubmitButtonText('Добавление...'); // Изменение текста кнопки при отправке формы
 
     props.onAddPlace({
-      name: inputTitleRef.current.value,
-      link: inputUrlRef.current.value
+      name: title,
+      link: url
     })
-      .then(() => {
-        inputTitleRef.current.value = '';
-        inputUrlRef.current.value = '';
-      })
-      .catch((err) => {
-        console.error('Ошибка добавления карточки:', err);
-      })
       .finally(() => {
         setSubmitButtonText('Добавить'); // Возвращение исходного текста кнопки после завершения запроса
       });
@@ -37,11 +47,11 @@ function AddPlacePopup(props) {
       onClose={props.onClose}>
       <fieldset className="popup__contact-info">
         <div className="popup__field">
-          <input className="popup__input" ref={inputTitleRef} placeholder='Название' id="title" name="name" type="text" minLength="2" maxLength="30" required />
+          <input className="popup__input" value={title} onChange={handleChangeTitle} placeholder='Название' id="title" name="name" type="text" minLength="2" maxLength="30" required />
           <span className="title-error popup__input-error"></span>
         </div>
         <div className="popup__field">
-          <input className="popup__input" ref={inputUrlRef} placeholder='Ссылка на картинку' id="img-url" name="link" type="url" required />
+          <input className="popup__input" value={url} onChange={handleChangeUrl} placeholder='Ссылка на картинку' id="img-url" name="link" type="url" required />
           <span className="img-url-error popup__input-error"></span>
         </div>
       </fieldset>

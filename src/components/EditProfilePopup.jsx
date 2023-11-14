@@ -25,7 +25,7 @@ function EditProfilePopup(props) {
       setName(currentUser.name);
       setDescription(currentUser.about);
     }
-  }, [currentUser]);
+  }, [currentUser, props.isOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -36,12 +36,9 @@ function EditProfilePopup(props) {
       name,
       about: description,
     })
-      .catch((err) => {
-        console.error('Ошибка обновления данных пользователя:', err);
-      })
       .finally(() => {
-      setSubmitButtonText('Сохранить'); // Возвращение исходного текста кнопки после завершения запроса
-    });
+        setSubmitButtonText('Сохранить'); // Возвращение исходного текста кнопки после завершения запроса
+      });
   }
 
   return (
